@@ -19,20 +19,16 @@ namespace SoftDeleteQueryFilterExample
             var context = GetDbContext();
             await context.EnsureDatabaseCreatedAsync();
 
-            //prepare book service
+            //initialize book service
             var bookService = new BookService(context);
         }
 
-      
-
-
-
-
         #region DbContext Helpers
-        static AppDbContext GetDbContext()
-        {
-            return new DbContextFactory().CreateDbContext(null);
-        }
+        /// <summary>
+        /// Creates a new db context from the dbcontextfactory
+        /// </summary>
+        /// <returns></returns>
+        static AppDbContext GetDbContext() => new DbContextFactory().CreateDbContext(null);
         #endregion
     }
 }
