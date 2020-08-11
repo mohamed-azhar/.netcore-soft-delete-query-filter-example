@@ -9,12 +9,12 @@ namespace SoftDeleteQueryFilterExample.Extensions
 {
     public static class ModelBuilderExtensions
     {
-        public static void ConfigureSoftDeleteQueryFilter(this ModelBuilder bobTheBuilder)
+        public static void ApplySoftDeleteQueryFilter(this ModelBuilder bobTheBuilder)
         {
             //get all entities which has implemented the IDeletableEntity interface  
             var entities = bobTheBuilder.Model.GetEntityTypes().Where(x => typeof(IDeletableEntity).IsAssignableFrom(x.ClrType))?.ToList();
 
-            //loop through all the entities and apply the soft delete query filter
+            //loop through all the entities and apply the lambda expression after building it for each entity
             entities.ForEach(x =>
             {
                 bobTheBuilder.Entity(x.ClrType).HasQueryFilter(BuildLambdaExpression<IDeletableEntity>(y => !y.IsDeleted, x.ClrType));

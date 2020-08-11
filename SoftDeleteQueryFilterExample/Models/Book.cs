@@ -1,17 +1,14 @@
-﻿using System;
-
-namespace SoftDeleteQueryFilterExample.Models
+﻿namespace SoftDeleteQueryFilterExample.Models
 {
     public class Book : CommonAttributes
     {
-        public Book(string title, string description)
+        public Book(string title, string author)
         {
             Title = title;
-            Description = description;
+            Author = author;
         }
 
         public string Title { get; set; }
-
-        public string Description { get; set; }
+        public string Author { get; set; }
     }
 }

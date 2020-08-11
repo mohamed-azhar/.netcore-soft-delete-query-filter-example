@@ -12,19 +12,18 @@ namespace SoftDeleteQueryFilterExample.Services
         {
         }
 
-        public async Task<int> GetTotalCount() => await DbContext.Book.CountAsync();
+        public async Task<int> GetTotalCount() => await DbContext.Books.CountAsync();
 
-        public async Task<Book[]> GetAllBooks() => await DbContext.Book.ToArrayAsync();
+        public async Task<Book[]> GetAllBooks() => await DbContext.Books.ToArrayAsync();
 
-        public async Task<Tuple<bool, string>> CreateBook(string title, string description)
+        public async Task<Tuple<bool, string>> DeleteBook(int id)
         {
-            if (string.IsNullOrWhiteSpace(title)) return Tuple.Create(false, "Name cannot be empty.");
-            if (string.IsNullOrWhiteSpace(description)) return Tuple.Create(false, "Description cannot be empty.");
+            var book = await DbContext.Books.SingleOrDefaultAsync(x => x.Id == id);
+            if (book is null) return Tuple.Create(false, "Book to be deleted cannot be found");
 
             try
             {
-                await DbContext.Book.AddAsync(new Book(title, description));
-
+                DbContext.Books.Remove(book);
                 await Commit();
                 return Tuple.Create(true, string.Empty);
             }
@@ -33,7 +32,5 @@ namespace SoftDeleteQueryFilterExample.Services
                 return Tuple.Create(false, ex.Message);
             }
         }
-
-        public async Task<Tuple<bool, string>> DeleteBook(int id) => await DeleteEntity<Book>(id);
     }
 }
